@@ -7,7 +7,7 @@ export default function Home() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [gameVersion, setGameVersion] = useState("classic");
+  const [gameVersion, setGameVersion] = useState("witcher");
 
   useEffect(() => {
     async function fetchPlayers() {
@@ -39,6 +39,11 @@ export default function Home() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Gwent Leaderboard</h1>
+      <select value={gameVersion} onChange={(e) => setGameVersion(e.target.value)} className="mb-4 p-2 border rounded">
+        <option value="witcher">Witcher</option>
+        <option value="got">Game of Thrones</option>
+        <option value="lotr">Lord of the Rings</option>
+      </select>
       <LeaderboardTable players={players} gameVersion={gameVersion} />
     </div>
   );

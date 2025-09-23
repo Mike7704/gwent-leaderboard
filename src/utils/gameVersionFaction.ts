@@ -3,7 +3,7 @@ type FactionData = Record<string, Record<string, FactionInfo>>;
 
 // Data for each game version and its factions
 const factionData: FactionData = {
-  classic: {
+  witcher: {
     neutral: { name: "Neutral", total: 26 },
     special: { name: "Special", total: 18 },
     faction1: { name: "Northern Realms", total: 123 },

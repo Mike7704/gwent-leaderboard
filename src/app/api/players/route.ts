@@ -24,7 +24,7 @@ type Player = {
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const game = searchParams.get("game") || "classic";
+    const game = searchParams.get("game") || "witcher";
 
     const result = await sql`
       SELECT *
