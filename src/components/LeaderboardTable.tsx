@@ -1,7 +1,15 @@
 "use client";
 
 import React from "react";
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getSortedRowModel,
+  SortingState,
+} from "@tanstack/react-table";
+import { ArrowUp, ArrowDown } from "lucide-react";
 import { getFactionHeader, getTotalCards } from "@/utils/gameVersionFaction";
 
 export type Player = {
@@ -10,6 +18,7 @@ export type Player = {
   wins: number;
   draws: number;
   losses: number;
+  win_percentage: number;
   highest_scored_round: number;
   challenges_completed: number;
   total_cards_unlocked: number;
@@ -23,24 +32,15 @@ export type Player = {
 };
 
 export default function LeaderboardTable({ players, gameVersion }: { players: Player[]; gameVersion: string }) {
+  const [sorting, setSorting] = React.useState<SortingState>([{ id: "wins", desc: true }]);
+
   // Define table columns with dynamic headers based on game version
   const columns: ColumnDef<Player>[] = [
     { accessorKey: "username", header: "Username" },
     { accessorKey: "wins", header: "Wins" },
     { accessorKey: "draws", header: "Draws" },
     { accessorKey: "losses", header: "Losses" },
-
-    {
-      id: "winPercentage",
-      header: "Win %",
-      cell: ({ row }) => {
-        const { wins, draws, losses } = row.original;
-        const totalGames = wins + draws + losses;
-        const percentage = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : "0.0";
-        return `${percentage}%`;
-      },
-    },
-
+    { accessorKey: "win_percentage", header: "Win %" },
     { accessorKey: "highest_scored_round", header: "Highest Score" },
     { accessorKey: "challenges_completed", header: "Challenges (35)" },
     { accessorKey: "total_cards_unlocked", header: `Total Cards (${getTotalCards(gameVersion)})` },
@@ -57,18 +57,27 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
   const table = useReactTable({
     data: players,
     columns,
+    state: { sorting },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
-    <div className="overflow-x-auto">
-      <table className="border-collapse border border-gray-800 w-full text-center">
-        <thead className="bg-gray-800">
+    <div className="overflow-x-auto overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-yellow-500 scrollbar-track-gray-800">
+      <table className="w-full text-center text-xs table-auto">
+        <thead className="bg-yellow-500 text-black font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="border px-3 py-2 min-w-[120px]">
+                <th
+                  key={header.id}
+                  className={"border border-yellow-500 px-1 py-1 min-w-[115px] cursor-pointer select-none"}
+                  onClick={header.column.getToggleSortingHandler()}
+                >
                   {flexRender(header.column.columnDef.header, header.getContext())}
+                  {header.column.getIsSorted() === "asc" && <ArrowUp className="inline w-3 h-3 ml-1" />}
+                  {header.column.getIsSorted() === "desc" && <ArrowDown className="inline w-3 h-3 ml-1" />}
                 </th>
               ))}
             </tr>
@@ -76,9 +85,9 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-600">
+            <tr key={row.id} className="hover:bg-yellow-500/50 active:bg-yellow-500/50">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border px-3 py-2 min-w-[120px]">
+                <td key={cell.id} className={"border border-yellow-500/75 px-1 py-1 min-w-[115px]"}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

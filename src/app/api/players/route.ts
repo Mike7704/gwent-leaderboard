@@ -30,7 +30,7 @@ export async function GET(req: Request) {
       SELECT *
       FROM gwent_leaderboard
       WHERE game = ${game}
-      ORDER BY wins DESC, challenges_completed DESC, highest_scored_round DESC, username ASC;
+      ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC;
     `;
 
     return NextResponse.json(result.rows, { status: 200 });

@@ -39,28 +39,29 @@ export default function Home() {
 
   return (
     <div className="min-w-screen min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(/background.jpg)` }}>
-      <div className="min-h-screen pl-4 pr-4 text-white">
-        <div className="flex justify-center">
+      <div className="px-4 py-2 text-white">
+        <div className="flex flex-col items-center gap-2 mb-4">
           <Image
             src={`/${gameVersion}_logo.png`}
             alt={`${gameVersion} logo`}
             width={250}
             height={166}
             priority
-            className="w-auto h-auto"
+            className="h-auto w-48 lg:w-auto"
           />
-        </div>
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold mb-4">Gwent Leaderboard:</h1>
-          <select
-            value={gameVersion}
-            onChange={(e) => setGameVersion(e.target.value)}
-            className="mb-2 p-2 border rounded bg-black"
-          >
-            <option value="witcher">Witcher</option>
-            <option value="got">Game of Thrones</option>
-            <option value="lotr">Lord of the Rings</option>
-          </select>
+
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <h1 className="text-xl lg:text-3xl font-bold text-yellow-500">Leaderboard</h1>
+            <select
+              value={gameVersion}
+              onChange={(e) => setGameVersion(e.target.value)}
+              className="p-1 lg:p-2 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 font-semibold cursor-pointer focus:outline-none"
+            >
+              <option value="witcher">Witcher</option>
+              <option value="got">Game of Thrones</option>
+              <option value="lotr">Lord of the Rings</option>
+            </select>
+          </div>
         </div>
         <LeaderboardTable players={players} gameVersion={gameVersion} />
       </div>
