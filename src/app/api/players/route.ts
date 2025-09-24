@@ -25,13 +25,41 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const game = searchParams.get("game") || "witcher";
+    const timeRange = searchParams.get("range") || "all_time";
 
-    const result = await sql`
-      SELECT *
-      FROM gwent_leaderboard
-      WHERE game = ${game}
-      ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC;
-    `;
+    let result;
+    if (timeRange === "today") {
+      result = await sql`
+        SELECT *
+        FROM gwent_leaderboard
+        WHERE game = ${game}
+          AND updated_at >= NOW()::date
+        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+      `;
+    } else if (timeRange === "past_week") {
+      result = await sql`
+        SELECT *
+        FROM gwent_leaderboard
+        WHERE game = ${game}
+          AND updated_at >= NOW() - INTERVAL '7 days'
+        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+      `;
+    } else if (timeRange === "past_month") {
+      result = await sql`
+        SELECT *
+        FROM gwent_leaderboard
+        WHERE game = ${game}
+          AND updated_at >= NOW() - INTERVAL '30 days'
+        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+      `;
+    } else {
+      result = await sql`
+        SELECT *
+        FROM gwent_leaderboard
+        WHERE game = ${game}
+        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+      `;
+    }
 
     return NextResponse.json(result.rows, { status: 200 });
   } catch (error) {

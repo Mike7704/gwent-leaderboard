@@ -64,7 +64,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
   });
 
   return (
-    <div className="overflow-x-auto overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-yellow-500 scrollbar-track-gray-800">
+    <div className="h-full overflow-auto scrollbar-thin scrollbar-thumb-yellow-500 scrollbar-track-gray-800">
       <table className="w-full text-center text-xs table-auto">
         <thead className="bg-yellow-500 text-black font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -85,7 +85,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-yellow-500/50 active:bg-yellow-500/50">
+            <tr key={row.id} className="hover:bg-yellow-500/33 active:bg-yellow-500/33">
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className={"border border-yellow-500/75 px-1 py-1 min-w-[115px]"}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
