@@ -29,8 +29,20 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
     { accessorKey: "wins", header: "Wins" },
     { accessorKey: "draws", header: "Draws" },
     { accessorKey: "losses", header: "Losses" },
-    { accessorKey: "highest_scored_round", header: "High Score" },
-    { accessorKey: "challenges_completed", header: "Challenges Completed" },
+
+    {
+      id: "winPercentage",
+      header: "Win %",
+      cell: ({ row }) => {
+        const { wins, draws, losses } = row.original;
+        const totalGames = wins + draws + losses;
+        const percentage = totalGames > 0 ? ((wins / totalGames) * 100).toFixed(1) : "0.0";
+        return `${percentage}%`;
+      },
+    },
+
+    { accessorKey: "highest_scored_round", header: "Highest Score" },
+    { accessorKey: "challenges_completed", header: "Challenges (35)" },
     { accessorKey: "total_cards_unlocked", header: `Total Cards (${getTotalCards(gameVersion)})` },
     { accessorKey: "neutral_cards_unlocked", header: getFactionHeader(gameVersion, "neutral") },
     { accessorKey: "special_cards_unlocked", header: getFactionHeader(gameVersion, "special") },
@@ -50,12 +62,12 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
 
   return (
     <div className="overflow-x-auto">
-      <table className="border-collapse border border-gray-300 w-full text-center">
-        <thead className="bg-gray-200">
+      <table className="border-collapse border border-gray-800 w-full text-center">
+        <thead className="bg-gray-800">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="border px-3 py-2">
+                <th key={header.id} className="border px-3 py-2 min-w-[120px]">
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
@@ -64,9 +76,9 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-100">
+            <tr key={row.id} className="hover:bg-gray-600">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border px-3 py-2">
+                <td key={cell.id} className="border px-3 py-2 min-w-[120px]">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
