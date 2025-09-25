@@ -41,7 +41,7 @@ export default function Home() {
       style={{ backgroundImage: `url(/background.jpg)` }}
     >
       <div className="flex flex-col gap-2 px-4 py-2 w-full h-full text-white">
-        <div className="flex flex-col sm:flex-row items-center justify-start sm:self-start gap-2 sm:gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-start md:self-start gap-2 md:gap-4">
           <Image
             src={`/${gameVersion}_logo.png`}
             alt={`${gameVersion} logo`}
@@ -50,12 +50,12 @@ export default function Home() {
             priority
             className="h-auto w-auto"
           />
-          <h1 className="text-xl sm:text-2xl font-bold text-yellow-500">Leaderboard</h1>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
+          <h1 className="text-xl md:text-2xl font-bold text-yellow-500">Leaderboard</h1>
+          <div className="flex items-center justify-center gap-2 md:gap-4 flex-wrap">
             <select
               value={gameVersion}
               onChange={(e) => setGameVersion(e.target.value)}
-              className="w-36 p-1 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 text-sm sm:text-base font-semibold cursor-pointer focus:outline-none"
+              className="w-40 p-1 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 text-sm md:text-base font-semibold cursor-pointer focus:outline-none"
             >
               <option value="witcher">Witcher</option>
               <option value="got">Game of Thrones</option>
@@ -64,7 +64,7 @@ export default function Home() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="w-36 p-1 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 text-sm sm:text-base font-semibold cursor-pointer focus:outline-none"
+              className="w-40 p-1 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 text-sm md:text-base font-semibold cursor-pointer focus:outline-none"
             >
               <option value="all_time">All Time</option>
               <option value="today">Today</option>

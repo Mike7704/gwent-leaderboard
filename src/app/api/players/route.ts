@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
+import { randomUUID } from "crypto";
 
 type Player = {
   id?: string;
@@ -77,14 +78,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "username and game are required" }, { status: 400 });
     }
 
+    const idValue = data.id || randomUUID();
+
     const result = await sql`
       INSERT INTO gwent_leaderboard (
-        game, username, wins, draws, losses, highest_scored_round,
+        id, game, username, wins, draws, losses, highest_scored_round,
         challenges_completed, total_cards_unlocked, neutral_cards_unlocked, special_cards_unlocked,
         faction1_cards_unlocked, faction2_cards_unlocked, faction3_cards_unlocked,
         faction4_cards_unlocked, faction5_cards_unlocked
       ) VALUES (
-        ${data.game}, ${data.username}, ${data.wins || 0}, ${data.draws || 0}, ${data.losses || 0},
+        ${idValue}, ${data.game}, ${data.username}, ${data.wins || 0}, ${data.draws || 0}, ${data.losses || 0},
         ${data.highest_scored_round || 0}, ${data.challenges_completed || 0}, ${data.total_cards_unlocked || 0},
         ${data.neutral_cards_unlocked || 0}, ${data.special_cards_unlocked || 0}, ${data.faction1_cards_unlocked || 0},
         ${data.faction2_cards_unlocked || 0}, ${data.faction3_cards_unlocked || 0},
