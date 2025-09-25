@@ -69,8 +69,8 @@ export async function GET(req: Request) {
   }
 }
 
-// POST: add a new player
-export async function POST(req: Request) {
+// PUT: add or update a player
+export async function PUT(req: Request) {
   try {
     const data: Player = await req.json();
 
@@ -93,52 +93,29 @@ export async function POST(req: Request) {
         ${data.faction2_cards_unlocked || 0}, ${data.faction3_cards_unlocked || 0},
         ${data.faction4_cards_unlocked || 0}, ${data.faction5_cards_unlocked || 0}
       )
+      ON CONFLICT (id) DO UPDATE SET
+        game = EXCLUDED.game,
+        username = EXCLUDED.username,
+        wins = EXCLUDED.wins,
+        draws = EXCLUDED.draws,
+        losses = EXCLUDED.losses,
+        highest_scored_round = EXCLUDED.highest_scored_round,
+        challenges_completed = EXCLUDED.challenges_completed,
+        total_cards_unlocked = EXCLUDED.total_cards_unlocked,
+        neutral_cards_unlocked = EXCLUDED.neutral_cards_unlocked,
+        special_cards_unlocked = EXCLUDED.special_cards_unlocked,
+        faction1_cards_unlocked = EXCLUDED.faction1_cards_unlocked,
+        faction2_cards_unlocked = EXCLUDED.faction2_cards_unlocked,
+        faction3_cards_unlocked = EXCLUDED.faction3_cards_unlocked,
+        faction4_cards_unlocked = EXCLUDED.faction4_cards_unlocked,
+        faction5_cards_unlocked = EXCLUDED.faction5_cards_unlocked
       RETURNING *;
     `;
-
-    return NextResponse.json(result.rows[0], { status: 201 });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Failed to add player" }, { status: 500 });
-  }
-}
-
-// PUT: update a player by ID
-export async function PUT(req: Request) {
-  try {
-    const data: Player = await req.json();
-    if (!data.id) {
-      return NextResponse.json({ error: "Player ID is required" }, { status: 400 });
-    }
-
-    const result = await sql`
-      UPDATE gwent_leaderboard
-      SET username = ${data.username},
-          wins = ${data.wins || 0},
-          draws = ${data.draws || 0},
-          losses = ${data.losses || 0},
-          highest_scored_round = ${data.highest_scored_round || 0},
-          challenges_completed = ${data.challenges_completed || 0},
-          total_cards_unlocked = ${data.total_cards_unlocked || 0},
-          neutral_cards_unlocked = ${data.neutral_cards_unlocked || 0},
-          special_cards_unlocked = ${data.special_cards_unlocked || 0},
-          faction1_cards_unlocked = ${data.faction1_cards_unlocked || 0},
-          faction2_cards_unlocked = ${data.faction2_cards_unlocked || 0},
-          faction3_cards_unlocked = ${data.faction3_cards_unlocked || 0},
-          faction4_cards_unlocked = ${data.faction4_cards_unlocked || 0},
-          faction5_cards_unlocked = ${data.faction5_cards_unlocked || 0}
-      WHERE id = ${data.id}
-      RETURNING *;
-    `;
-
-    if (!result.rows[0]) {
-      return NextResponse.json({ error: "Player not found" }, { status: 404 });
-    }
 
     return NextResponse.json(result.rows[0], { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Failed to update player" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to upsert player" }, { status: 500 });
   }
 }
 
