@@ -10,7 +10,7 @@ import {
   SortingState,
 } from "@tanstack/react-table";
 import { ArrowUp, ArrowDown } from "lucide-react";
-import { getFactionHeader, getTotalCards, getTotalChallenges } from "@/utils/gameVersionFaction";
+import { theme, getFactionHeader, getTotalCards, getTotalChallenges } from "@/utils/gameVersion";
 
 export type Player = {
   id: string;
@@ -34,6 +34,8 @@ export type Player = {
 export default function LeaderboardTable({ players, gameVersion }: { players: Player[]; gameVersion: string }) {
   const [sorting, setSorting] = React.useState<SortingState>([{ id: "wins", desc: true }]);
 
+  const colourTheme = theme[gameVersion] || "#f5c022";
+
   // Define table columns with dynamic headers based on game version
   const columns: ColumnDef<Player>[] = [
     { accessorKey: "username", header: "Username" },
@@ -41,7 +43,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
     { accessorKey: "draws", header: "Draws" },
     { accessorKey: "losses", header: "Losses" },
     { accessorKey: "win_percentage", header: "Win %" },
-    { accessorKey: "highest_scored_round", header: "Highest Score" },
+    { accessorKey: "highest_scored_round", header: "Highest Round" },
     { accessorKey: "challenges_completed", header: `Challenges (${getTotalChallenges(gameVersion)})` },
     { accessorKey: "total_cards_unlocked", header: `Total Cards (${getTotalCards(gameVersion)})` },
     { accessorKey: "neutral_cards_unlocked", header: getFactionHeader(gameVersion, "neutral") },
@@ -64,15 +66,19 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
   });
 
   return (
-    <div className="h-full overflow-auto scrollbar-thin scrollbar-thumb-[#f5c022] scrollbar-track-gray-800">
+    <div
+      className="h-full overflow-auto scrollbar-thin scrollbar-track-gray-800"
+      style={{ scrollbarColor: `${colourTheme} #1f2937` }}
+    >
       <table className="w-full text-center text-xs table-auto">
-        <thead className="bg-[#f5c022] text-black font-semibold">
+        <thead className="text-black font-semibold" style={{ backgroundColor: colourTheme }}>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className={"border border-[#f5c022] px-1 py-1 min-w-[115px] cursor-pointer select-none"}
+                  className="border px-1 py-1 min-w-[115px] cursor-pointer select-none"
+                  style={{ borderColor: colourTheme }}
                   onClick={header.column.getToggleSortingHandler()}
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
@@ -85,9 +91,17 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-[#f5c022]/33 active:bg-[#f5c022]/33">
+            <tr
+              key={row.id}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = `${colourTheme}33`)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+            >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className={"border border-[#f5c022]/75 px-1 py-1 min-w-[115px]"}>
+                <td
+                  key={cell.id}
+                  className="border px-1 py-1 min-w-[115px]"
+                  style={{ borderColor: `${colourTheme}BF` }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

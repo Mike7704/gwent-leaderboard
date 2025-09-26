@@ -61,3 +61,9 @@ export function getTotalChallenges(gameVersion: string): number {
       return 0;
   }
 }
+// Returns a colour for each game version
+export const theme: Record<string, string> = {
+  witcher: "#f5c022",
+  got: "#969696",
+  lotr: "#ffb21a",
+};
