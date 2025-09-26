@@ -66,10 +66,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
   });
 
   return (
-    <div
-      className="h-full overflow-auto scrollbar-thin scrollbar-track-gray-800"
-      style={{ scrollbarColor: `${colourTheme} #1f2937` }}
-    >
+    <div className="h-full overflow-auto scrollbar-thin" style={{ scrollbarColor: `${colourTheme} transparent` }}>
       <table className="w-full text-center text-xs table-auto">
         <thead className="text-black font-semibold" style={{ backgroundColor: colourTheme }}>
           {table.getHeaderGroups().map((headerGroup) => (
