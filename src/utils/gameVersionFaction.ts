@@ -47,3 +47,17 @@ export function getTotalCards(gameVersion: string): number {
   const factions = factionData[gameVersion];
   return Object.values(factions).reduce((sum, f) => sum + f.total, 0);
 }
+
+// Returns the total number of challenges for a given game version
+export function getTotalChallenges(gameVersion: string): number {
+  switch (gameVersion) {
+    case "witcher":
+      return 55;
+    case "got":
+      return 35;
+    case "lotr":
+      return 37;
+    default:
+      return 0;
+  }
+}

@@ -50,12 +50,12 @@ export default function Home() {
             priority
             className="h-auto w-auto"
           />
-          <h1 className="text-xl md:text-2xl font-bold text-yellow-500">Leaderboard</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-[#f5c022]">Leaderboard</h1>
           <div className="flex items-center justify-center gap-2 md:gap-4 flex-wrap">
             <select
               value={gameVersion}
               onChange={(e) => setGameVersion(e.target.value)}
-              className="w-40 p-1 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 text-sm md:text-base font-semibold cursor-pointer focus:outline-none"
+              className="w-40 p-1 border-2 border-[#f5c022] rounded-md bg-black text-[#f5c022] text-sm md:text-base font-semibold cursor-pointer focus:outline-none"
             >
               <option value="witcher">Witcher</option>
               <option value="got">Game of Thrones</option>
@@ -64,7 +64,7 @@ export default function Home() {
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value)}
-              className="w-40 p-1 border-2 border-yellow-500 rounded-md bg-black text-yellow-500 text-sm md:text-base font-semibold cursor-pointer focus:outline-none"
+              className="w-40 p-1 border-2 border-[#f5c022] rounded-md bg-black text-[#f5c022] text-sm md:text-base font-semibold cursor-pointer focus:outline-none"
             >
               <option value="all_time">All Time</option>
               <option value="today">Today</option>
@@ -74,7 +74,7 @@ export default function Home() {
           </div>
         </div>
 
-        {loading && <p className="text-yellow-500 text-center">Loading leaderboard...</p>}
+        {loading && <p className="text-[#f5c022] text-center">Loading leaderboard...</p>}
         {error && <p className="text-red-600 text-center">{error}</p>}
         {!loading && !error && <LeaderboardTable players={players} gameVersion={gameVersion} />}
       </div>

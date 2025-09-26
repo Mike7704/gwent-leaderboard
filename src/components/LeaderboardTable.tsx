@@ -10,7 +10,7 @@ import {
   SortingState,
 } from "@tanstack/react-table";
 import { ArrowUp, ArrowDown } from "lucide-react";
-import { getFactionHeader, getTotalCards } from "@/utils/gameVersionFaction";
+import { getFactionHeader, getTotalCards, getTotalChallenges } from "@/utils/gameVersionFaction";
 
 export type Player = {
   id: string;
@@ -42,7 +42,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
     { accessorKey: "losses", header: "Losses" },
     { accessorKey: "win_percentage", header: "Win %" },
     { accessorKey: "highest_scored_round", header: "Highest Score" },
-    { accessorKey: "challenges_completed", header: "Challenges (35)" },
+    { accessorKey: "challenges_completed", header: `Challenges (${getTotalChallenges(gameVersion)})` },
     { accessorKey: "total_cards_unlocked", header: `Total Cards (${getTotalCards(gameVersion)})` },
     { accessorKey: "neutral_cards_unlocked", header: getFactionHeader(gameVersion, "neutral") },
     { accessorKey: "special_cards_unlocked", header: getFactionHeader(gameVersion, "special") },
@@ -64,15 +64,15 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
   });
 
   return (
-    <div className="h-full overflow-auto scrollbar-thin scrollbar-thumb-yellow-500 scrollbar-track-gray-800">
+    <div className="h-full overflow-auto scrollbar-thin scrollbar-thumb-[#f5c022] scrollbar-track-gray-800">
       <table className="w-full text-center text-xs table-auto">
-        <thead className="bg-yellow-500 text-black font-semibold">
+        <thead className="bg-[#f5c022] text-black font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className={"border border-yellow-500 px-1 py-1 min-w-[115px] cursor-pointer select-none"}
+                  className={"border border-[#f5c022] px-1 py-1 min-w-[115px] cursor-pointer select-none"}
                   onClick={header.column.getToggleSortingHandler()}
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
@@ -85,9 +85,9 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-yellow-500/33 active:bg-yellow-500/33">
+            <tr key={row.id} className="hover:bg-[#f5c022]/33 active:bg-[#f5c022]/33">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className={"border border-yellow-500/75 px-1 py-1 min-w-[115px]"}>
+                <td key={cell.id} className={"border border-[#f5c022]/75 px-1 py-1 min-w-[115px]"}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
