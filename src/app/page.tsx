@@ -66,6 +66,7 @@ export default function Home() {
               <option value="witcher">Witcher</option>
               <option value="got">Game of Thrones</option>
               <option value="lotr">Lord of the Rings</option>
+              <option value="e33">Expedition 33</option>
             </select>
             <select
               value={timeRange}

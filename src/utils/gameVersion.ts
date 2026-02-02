@@ -30,6 +30,15 @@ const factionData: FactionData = {
     faction4: { name: "N/A", total: 0 },
     faction5: { name: "N/A", total: 0 },
   },
+  e33: {
+    neutral: { name: "Neutral", total: 141 },
+    special: { name: "Special", total: 20 },
+    faction1: { name: "N/A", total: 0 },
+    faction2: { name: "N/A", total: 0 },
+    faction3: { name: "N/A", total: 0 },
+    faction4: { name: "N/A", total: 0 },
+    faction5: { name: "N/A", total: 0 },
+  },
 };
 
 // Returns the faction name and total cards for a given game version and faction
@@ -52,11 +61,13 @@ export function getTotalCards(gameVersion: string): number {
 export function getTotalChallenges(gameVersion: string): number {
   switch (gameVersion) {
     case "witcher":
-      return 55;
+      return 58;
     case "got":
-      return 35;
+      return 38;
     case "lotr":
-      return 37;
+      return 40;
+    case "e33":
+      return 35;
     default:
       return 0;
   }
@@ -66,4 +77,5 @@ export const theme: Record<string, string> = {
   witcher: "#f5c022",
   got: "#969696",
   lotr: "#ffb21a",
+  e33: "#d4b993",
 };
