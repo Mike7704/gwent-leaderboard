@@ -13,11 +13,11 @@ const factionData: FactionData = {
     faction5: { name: "Skellige", total: 85 },
   },
   got: {
-    neutral: { name: "Neutral", total: 46 },
+    neutral: { name: "Neutral", total: 48 },
     special: { name: "Special", total: 18 },
-    faction1: { name: "House Targaryen", total: 90 },
+    faction1: { name: "House Targaryen", total: 93 },
     faction2: { name: "Black Loyalists", total: 118 },
-    faction3: { name: "Green Loyalists", total: 96 },
+    faction3: { name: "Green Loyalists", total: 106 },
     faction4: { name: "Beyond the Wall", total: 81 },
     faction5: { name: "Sons of Essos", total: 82 },
   },
@@ -61,13 +61,13 @@ export function getTotalCards(gameVersion: string): number {
 export function getTotalChallenges(gameVersion: string): number {
   switch (gameVersion) {
     case "witcher":
-      return 58;
+      return 60;
     case "got":
-      return 38;
-    case "lotr":
       return 40;
+    case "lotr":
+      return 42;
     case "e33":
-      return 35;
+      return 37;
     default:
       return 0;
   }
