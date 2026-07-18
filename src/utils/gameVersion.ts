@@ -61,13 +61,13 @@ export function getTotalCards(gameVersion: string): number {
 export function getTotalChallenges(gameVersion: string): number {
   switch (gameVersion) {
     case "witcher":
-      return 60;
+      return 80;
     case "got":
-      return 40;
+      return 60;
     case "lotr":
-      return 42;
+      return 62;
     case "e33":
-      return 37;
+      return 57;
     default:
       return 0;
   }

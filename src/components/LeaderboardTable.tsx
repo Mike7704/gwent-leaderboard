@@ -15,6 +15,7 @@ import { theme, getFactionHeader, getTotalCards, getTotalChallenges } from "@/ut
 export type Player = {
   id: string;
   username: string;
+  level: number;
   wins: number;
   draws: number;
   losses: number;
@@ -32,13 +33,14 @@ export type Player = {
 };
 
 export default function LeaderboardTable({ players, gameVersion }: { players: Player[]; gameVersion: string }) {
-  const [sorting, setSorting] = React.useState<SortingState>([{ id: "wins", desc: true }]);
+  const [sorting, setSorting] = React.useState<SortingState>([{ id: "level", desc: true }]);
 
   const colourTheme = theme[gameVersion] || "#f5c022";
 
   // Define table columns with dynamic headers based on game version
   const columns: ColumnDef<Player>[] = [
     { accessorKey: "username", header: "Username" },
+    { accessorKey: "level", header: "Level" },
     { accessorKey: "wins", header: "Wins" },
     { accessorKey: "draws", header: "Draws" },
     { accessorKey: "losses", header: "Losses" },
@@ -74,7 +76,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="border px-1 py-1 min-w-[115px] cursor-pointer select-none"
+                  className="border px-1 py-1 min-w-[110px] cursor-pointer select-none"
                   style={{ borderColor: colourTheme }}
                   onClick={header.column.getToggleSortingHandler()}
                 >
@@ -96,7 +98,7 @@ export default function LeaderboardTable({ players, gameVersion }: { players: Pl
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className="border px-1 py-1 min-w-[115px]"
+                  className="border px-1 py-1 min-w-[110px]"
                   style={{ borderColor: `${colourTheme}BF` }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -6,6 +6,7 @@ type Player = {
   id?: string;
   game?: string;
   username?: string;
+  level?: number;
   wins?: number;
   draws?: number;
   losses?: number;
@@ -35,7 +36,7 @@ export async function GET(req: Request) {
         FROM gwent_leaderboard
         WHERE game = ${game}
           AND updated_at >= NOW()::date
-        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+        ORDER BY level DESC, wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
       `;
     } else if (timeRange === "past_week") {
       result = await sql`
@@ -43,7 +44,7 @@ export async function GET(req: Request) {
         FROM gwent_leaderboard
         WHERE game = ${game}
           AND updated_at >= NOW() - INTERVAL '7 days'
-        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+        ORDER BY level DESC, wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
       `;
     } else if (timeRange === "past_month") {
       result = await sql`
@@ -51,14 +52,14 @@ export async function GET(req: Request) {
         FROM gwent_leaderboard
         WHERE game = ${game}
           AND updated_at >= NOW() - INTERVAL '30 days'
-        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+        ORDER BY level DESC, wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
       `;
     } else {
       result = await sql`
         SELECT *
         FROM gwent_leaderboard
         WHERE game = ${game}
-        ORDER BY wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
+        ORDER BY level DESC, wins DESC, win_percentage DESC, highest_scored_round DESC, username ASC
       `;
     }
 
@@ -82,20 +83,21 @@ export async function PUT(req: Request) {
 
     const result = await sql`
       INSERT INTO gwent_leaderboard (
-        id, game, username, wins, draws, losses, highest_scored_round,
+        id, game, username, level, wins, draws, losses, highest_scored_round,
         challenges_completed, total_cards_unlocked, neutral_cards_unlocked, special_cards_unlocked,
         faction1_cards_unlocked, faction2_cards_unlocked, faction3_cards_unlocked,
-        faction4_cards_unlocked, faction5_cards_unlocked
+        faction4_cards_unlocked, faction5_cards_unlocked, desktop_name
       ) VALUES (
-        ${idValue}, ${data.game}, ${data.username}, ${data.wins || 0}, ${data.draws || 0}, ${data.losses || 0},
+        ${idValue}, ${data.game}, ${data.username}, ${data.level || 1}, ${data.wins || 0}, ${data.draws || 0}, ${data.losses || 0},
         ${data.highest_scored_round || 0}, ${data.challenges_completed || 0}, ${data.total_cards_unlocked || 0},
         ${data.neutral_cards_unlocked || 0}, ${data.special_cards_unlocked || 0}, ${data.faction1_cards_unlocked || 0},
         ${data.faction2_cards_unlocked || 0}, ${data.faction3_cards_unlocked || 0},
-        ${data.faction4_cards_unlocked || 0}, ${data.faction5_cards_unlocked || 0}
+        ${data.faction4_cards_unlocked || 0}, ${data.faction5_cards_unlocked || 0}, ${data.username}
       )
       ON CONFLICT (id) DO UPDATE SET
         game = EXCLUDED.game,
         username = EXCLUDED.username,
+        level = EXCLUDED.level,
         wins = EXCLUDED.wins,
         draws = EXCLUDED.draws,
         losses = EXCLUDED.losses,
